@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="bundle.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCL1J1qRPLGfBP9AkMp9E0zfD-5_5UZcWs&callback=getLocationUpdate"> </script>
+      <script type="text/javascript">
+        var watchID,geoLoc,target;
+        target = {latitude : 1.377587,longitude: 103.850036};
+
+        function success(position) {
+            var origin_lat = position.coords.latitude;
+            var origin_lng = position.coords.longitude;
+            if (target.latitude === origin_lat && target.longitude === crd.longitude){
+                navigator.geolocation.clearWatch(watchID)
+            }
+
+            const directionsService = new google.maps.DirectionsService();
+            const directionRenderer = new google.maps.DirectionsRenderer();
+
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 18,
+                center: { lat: origin_lat, lng: origin_lng },
+                zoomControl: true,
+                mapTypeControl: true,
+                scaleControl: true,
+                streetViewControl: true,
+                rotateControl: true,
+                fullscreenControl: true
+            });
+            directionRenderer.setMap(map);
+            document.getElementById("submit").addEventListener("click", () => {
+                directionsService.route({
+                    origin : {lat:origin_lat, lng:origin_lng},
+                    destination : "Nanyang Polytechnic Block L,180 Ang Mo Kio Ave 8,Singapore 569830",
+                    waypoints: [
+                        {location:{lat:1.380062,lng:103.848457}}
+                    ],
+                    optimizeWaypoints: true,
+                    travelMode: google.maps.TravelMode.WALKING,
+                }) .then((response)=>{
+                    directionRenderer.setDirections(response);
+                    const route = response.routes[0];
+                    const summaryPanel = document.getElementById("directions-panel")
+                    summaryPanel.innerHTML="";
+
+                    //For each route, display information
+                    for (let i = 0; i < route.legs.length; i++) {
+                        const routeSegment = i + 1;
+
+                        summaryPanel.innerHTML +=
+                        "<b>Route Segment: " + routeSegment + "</b><br>";
+                        summaryPanel.innerHTML += route.legs[i].start_address + " to ";
+                        summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
+                        summaryPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
+                    }
+                })
+            }); 
+         }
+
+         function errorHandler(err) {
+            if(err.code == 1) {
+               alert("Error: Access is denied!");
+            } else if( err.code == 2) {
+               alert("Error: Position is unavailable!");
+            }
+         }
+        function getLocationUpdate(){
+            if (navigator.geolocation){
+                // timeout  in 60 seconds
+                var options = {timeout:60000};
+                geoLoc = navigator.geolocation
+                watchID = geoLoc.watchPosition(success,errorHandler,options)
+            } else{
+                alert("Browser does not support geolocation!")
+            }
+        }
+
+    </script>
+    <style>
+        #map {
+          height: 100%;
+        }
+        html, body {
+          height: 100%;
+          margin: 0;
+          padding: 0;
+        }
+      </style>
+</head>
+<body>
+
+<button id="submit"> GET YOUR ROUTE</button>
+<div id="map"></div>
+<div id="directions-panel"></div>
+</body>
+</html>
