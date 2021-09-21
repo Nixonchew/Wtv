@@ -242,3 +242,5 @@ function getLocationUpdate(){
         alert("Browser does not support geolocation!")
     }
 }
+
+
