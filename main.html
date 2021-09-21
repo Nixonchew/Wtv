@@ -14,12 +14,15 @@
     </script>
     <style>
         #map {
-            height: 50%;
+          height: 50%;
         }
         html, body {
           height: 100%;
           margin: 0;
           padding: 0;
+        }
+        #camera{
+          height: 50%
         }
       </style>
 </head>
@@ -31,6 +34,7 @@
 
 <body>
 <a-scene
+id = "camera"
 cursor='rayOrigin: mouse; fuse: true; fuseTimeout: 0;'
 raycaster="objects: [gps-entity-place];"
 vr-mode-ui="enabled: false"
