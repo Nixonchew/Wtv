@@ -1,0 +1,7 @@
+Block L
+- Longtitude: 103.84980618953705
+- Latitude: 1.3792464031689677
+
+Block A 
+- Longtitude: 103.84853482246399
+- Latitude:1.380061558329711
