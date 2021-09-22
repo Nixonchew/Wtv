@@ -156,7 +156,7 @@ function success(position) {
     const directionRenderer = new google.maps.DirectionsRenderer();
 
     const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 18,
+        zoom: 17,
         center: { lat: origin_lat, lng: origin_lng },
         zoomControl: true,
         mapTypeControl: true,
