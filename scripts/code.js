@@ -8,7 +8,7 @@ const loadPlaces = function(coords) {
 
     const PLACES = [
         {
-            name: "Testing1",
+            name: "House",
             location: {
                 lat: 1.445721, // add here latitude if using static data
                 lng: 103.795081, // add here longitude if using static data
@@ -17,26 +17,26 @@ const loadPlaces = function(coords) {
         },
 
         {
-            name: "Testing2",
+            name: "Block A",
             location:{
-                lat:1.444881,
-                lng:103.793885,
+                lat:1.379992,
+                lng:103.848594,
             }
         },
 
         {
-            name: "Block 728",
+            name: "Block L",
             location:{
-                lat:1.442829,
-                lng:103.799197,
+                lat:1.379155,
+                lng:103.849828,
             }
         },
 
         {
             name: "YCK",
             location:{
-                lat:1.378075,
-                lng:103.850044
+                lat:1.381504,
+                lng:103.844978
             }
         },
     ];
@@ -169,9 +169,9 @@ function success(position) {
     if (flag==true){
         directionsService.route({
                 origin : {lat:origin_lat, lng:origin_lng},
-                destination : "Nanyang Polytechnic Block L,180 Ang Mo Kio Ave 8,Singapore 569830",
+                destination : {lat:1.379155,lng:103.849828},
                 waypoints: [
-                    {location:{lat:1.380062,lng:103.848457}}
+                    {location:{lat:1.380062,lng:103.848594}}
                 ],
                 optimizeWaypoints: true,
                 travelMode: google.maps.TravelMode.WALKING,
@@ -199,7 +199,7 @@ function success(position) {
                 origin : {lat:origin_lat, lng:origin_lng},
                 destination : "Nanyang Polytechnic Block L,180 Ang Mo Kio Ave 8,Singapore 569830",
                 waypoints: [
-                    {location:{lat:1.380062,lng:103.848457}}
+                    {location:{lat:1.379992,lng:103.848457}}
                 ],
                 optimizeWaypoints: true,
                 travelMode: google.maps.TravelMode.WALKING,
