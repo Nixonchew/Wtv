@@ -14,21 +14,22 @@
     </script>
     <style>
         #map {
-          height: 50%;
-          width: 100%;
+          height: 70%;
+          width: 80%;
         }
         html, body {
           height: 100%;
-          max-width: 100%;
-          overflow-x: hidden;
           margin: 0;
           padding: 0;
+          overflow-x: hidden;
         }
         #camera{
-          height: 70%;
-          width:100%;
+          height: 60%
         }
-        
+        #submit{
+          position: absolute;
+
+        }
       </style>
 </head>
 
@@ -38,6 +39,7 @@
 <script src="./scripts/code.js"></script>
 
 <body>
+
 <a-scene
 id = "camera"
 cursor='rayOrigin: mouse; fuse: true; fuseTimeout: 0;'
@@ -45,13 +47,12 @@ raycaster="objects: [gps-entity-place];"
 vr-mode-ui="enabled: false"
 embedded
 arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
-
 <a-camera gps-camera rotation-reader>
 </a-camera>
 </a-scene>
 <div id="map"></div>
+<button id="submit" style="height: 80px;width: 100px; margin-left: 350px;"> GET YOUR ROUTE</button>
 
-<button id="submit" style="height: 40px;width: 100px;"> GET YOUR ROUTE</button>
 <div id="directions-panel"></div>
 </body>
 </html>
