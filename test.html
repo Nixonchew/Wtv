@@ -12,12 +12,17 @@
         function success(position) {
             var origin_lat = position.coords.latitude;
             var origin_lng = position.coords.longitude;
+            const map = window.map
+            document.getElementById("recenter").addEventListener("click", () => {
+                var latlng = new google.maps.LatLng(origin_lat,origin_lng)
+                map.setCenter(latlng,18)
+            })
             if (target.latitude === origin_lat && target.longitude === crd.longitude){
                 navigator.geolocation.clearWatch(watchID)
             } else{
                 const directionsService = new google.maps.DirectionsService();
                 const directionRenderer = new google.maps.DirectionsRenderer({preserveViewport:true});
-                const map = window.map
+                
                 directionRenderer.setMap(map);
                 if (flag==true){
                     directionsService.route({
@@ -94,9 +99,7 @@
                     maximumAge: 0
                 };
                 geoLoc.getCurrentPosition(currentPositionSuccess,currentPositionError,options)
-                document.getElementById("recenter").addEventListener("click", () => {
-                    geoLoc.getCurrentPosition(currentPositionSuccess,currentPositionError,options)
-                })
+                
                  // timeout  in 60 seconds
                 var options = {timeout:60000};
                 
@@ -118,6 +121,8 @@
         function currentPositionError(err){
             console.warn(`ERROR(${err.code}): ${err.message}`);
         }
+        
+        
     </script>
     <style>
         #map {
