@@ -7,24 +7,41 @@
       <script type="text/javascript">
         var watchID,geoLoc,target;
         var flag = false; 
+        var centered = false;
         target = {latitude:1.379155,longitude:103.849828};
 
         function success(position) {
             var origin_lat = position.coords.latitude;
             var origin_lng = position.coords.longitude;
             const map = window.map
-            document.getElementById("recenter").addEventListener("click", () => {
-                var latlng = new google.maps.LatLng(origin_lat,origin_lng)
-                map.setCenter(latlng,18)
+            window.map.addListener("drag",()=>{
+                console.log("CHANGED")
+                centered= false
             })
+            
+            document.getElementById("recenter").addEventListener("click", () => {
+                centered = true
+                console.log(centered)
+                var latlng = new google.maps.LatLng(origin_lat,origin_lng)
+                map.setCenter(latlng)
+                map.setZoom(18);
+            })
+            if (centered){
+                console.log("CENTERING")
+                var latlng = new google.maps.LatLng(origin_lat,origin_lng)
+                map.setCenter(latlng)
+                map.setZoom(18);    
+            }
             if (target.latitude === origin_lat && target.longitude === crd.longitude){
                 navigator.geolocation.clearWatch(watchID)
             } else{
                 const directionsService = new google.maps.DirectionsService();
                 const directionRenderer = new google.maps.DirectionsRenderer({preserveViewport:true});
-                
+                if (centered){
+                    
+                } 
                 directionRenderer.setMap(map);
-                if (flag==true){
+                if (flag){
                     directionsService.route({
                             origin : {lat:origin_lat, lng:origin_lng},
                             destination : {lat:1.379155,lng:103.849828},
