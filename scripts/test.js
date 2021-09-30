@@ -48,6 +48,7 @@ function success(position) {
         map.setZoom(18);    
     }
     if (target.latitude === origin_lat && target.longitude === crd.longitude){
+        alert("You have reached your desination")
         navigator.geolocation.clearWatch(watchID)
     } else{
         const directionsService = new google.maps.DirectionsService();
@@ -57,9 +58,9 @@ function success(position) {
         if (flag){
             directionsService.route({
                     origin : {lat:origin_lat, lng:origin_lng},
-                    destination : {lat:1.379155,lng:103.849828},
+                    destination : {lat:1.379238,lng:103.849848},
                     waypoints: [
-                        {location:{lat:1.380062,lng:103.848594}}
+                        {location:{lat:1.380080,lng:103.848500}}
                     ],
                     optimizeWaypoints: true,
                     travelMode: google.maps.TravelMode.WALKING
@@ -68,22 +69,8 @@ function success(position) {
                     directionRenderer.setDirections(response);
                     const route = response.routes[0];
                     var leg = route.legs[0]
-                    makeStartMarker(leg.start_location, leg.end_location, "START")
+                    makeStartMarker(leg.start_location, leg.end_location)
                     makeMarker(leg.end_location, icons.marker,"END")
-
-                    const summaryPanel = document.getElementById("directions-panel")
-                    summaryPanel.innerHTML="";
-
-                    //For each route, display information
-                    for (let i = 0; i < route.legs.length; i++) {
-                        const routeSegment = i + 1;
-
-                        summaryPanel.innerHTML +=
-                        "<b>Route Segment: " + routeSegment + "</b><br>";
-                        summaryPanel.innerHTML += route.legs[i].start_address + " to ";
-                        summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
-                        summaryPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
-                    }
                 })
         // If button is not clicked before
         } else{
@@ -91,9 +78,9 @@ function success(position) {
                 flag = true
                 directionsService.route({
                     origin : {lat:origin_lat, lng:origin_lng},
-                    destination : "Nanyang Polytechnic Block L,180 Ang Mo Kio Ave 8,Singapore 569830",
+                    destination : {lat:1.379238,lng:103.849848},
                     waypoints: [
-                        {location:{lat:1.380062,lng:103.848457}}
+                        {location:{lat:1.380080,lng:103.848500}}
                     ],
                     optimizeWaypoints: true,
                     travelMode: google.maps.TravelMode.WALKING
@@ -101,21 +88,11 @@ function success(position) {
                     directionRenderer.setDirections(response);
                     const route = response.routes[0];
                     var leg = route.legs[0]
-                    makeStartMarker(leg.start_location, leg.end_location, "START")
-                    makeMarker(leg.end_location, icons.marker,"END")
-
-                    const summaryPanel = document.getElementById("directions-panel")
-                    summaryPanel.innerHTML="";
-
-                    //For each route, display information
-                    for (let i = 0; i < route.legs.length; i++) {
-                        const routeSegment = i + 1;
-
-                        summaryPanel.innerHTML +=
-                        "<b>Route Segment: " + routeSegment + "</b><br>";
-                        summaryPanel.innerHTML += route.legs[i].start_address + " to ";
-                        summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
-                        summaryPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
+                    paths = response.routes[0].legs
+                    makeStartMarker(leg.start_location, leg.end_location)
+                    for (index in paths){
+                        leg = paths[index]
+                        makeMarker(leg.end_location, icons.marker,"END")
                     }
                 })
             }); 
@@ -170,11 +147,8 @@ function makeMarker( position, icon, title ) {
     });
 }
 
-function makeStartMarker( position,direction, title) {
-    
+function makeStartMarker( position,direction) {
     var heading = google.maps.geometry.spherical.computeHeading(direction,position);
-    console.log(direction.lat(),direction.lng())
-
     var line=new google.maps.Polyline({
         clickable:false,
         map:map,strokeOpacity:0,
@@ -187,22 +161,6 @@ function makeStartMarker( position,direction, title) {
                 }
             }]
         })
-    
-    
-   
-
-    
-    /**startMarker= new google.maps.Marker({
-        position: position,
-        map: map,
-        icon: {
-            path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-            scale: 6,
-            rotation: heading
-        },
-        title: title
-    }); **/
-
 }
 
 
