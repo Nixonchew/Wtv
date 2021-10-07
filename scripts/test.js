@@ -2,32 +2,79 @@ var watchID,geoLoc,target;
 var flag = false; 
 var centered = false;
 var target = {latitude:1.379155,longitude:103.849828};
+const places = [
+    {
+        name: "Chinese Heritage Center",
+        location: {
+            lat: 1.283421, // add here latitude if using static data
+            lng: 103.844455, // add here longitude if using static data
+
+        }
+    },
+
+    {
+        name: "Sri Maraimman Temple",
+        location:{
+            lat:1.282644,
+            lng:103.845227,
+        }
+    },
+
+    {
+        name: "Masjid Jamae",
+        location:{
+            lat:1.283190,
+            lng:103.845329,
+        }
+    },
+
+    {
+        name: "Tong Heng",
+        location:{
+            lat:1.281370,
+            lng:103.844937,
+        }
+    },
+];
 
 
 function success(position) {
     var origin_lat = position.coords.latitude;
     var origin_lng = position.coords.longitude;
      // Icons
- var icons = {
-    start: new google.maps.MarkerImage(
-     "static/start.png",
-     // (width,height)
-     new google.maps.Size( 44, 44 ),
-     // The origin point (x,y)
-     new google.maps.Point( 0, 0 ),
-     // The anchor point (x,y)
-     new google.maps.Point( 22, 32 )
-    ),
-    marker: new google.maps.MarkerImage(
-     new google.maps.MarkerImage(''),
-     // (width,height)
-     new google.maps.Size( 44, 44 ),
-     // The origin point (x,y)
-     new google.maps.Point( 0, 0 ),
-     // The anchor point (x,y)
-     new google.maps.Point( 22, 32 )
-    )
-   };
+     var icons = {
+        start: new google.maps.MarkerImage(
+        "static/start.png",
+        // (width,height)
+        new google.maps.Size( 44, 44 ),
+        // The origin point (x,y)
+        new google.maps.Point( 0, 0 ),
+        // The anchor point (x,y)
+        new google.maps.Point( 22, 32 )
+        )
+    };
+    
+    var markers = {
+        0 : new google.maps.MarkerImage(
+            '',
+            // (width,height)
+            new google.maps.Size( 44, 44 ),
+            // The origin point (x,y)
+            new google.maps.Point( 0, 0 ),
+            // The anchor point (x,y)
+            new google.maps.Point( 22, 32 )
+        ),
+        1 : new google.maps.MarkerImage(
+            '',
+            // (width,height)
+            new google.maps.Size( 44, 44 ),
+            // The origin point (x,y)
+            new google.maps.Point( 0, 0 ),
+            // The anchor point (x,y)
+            new google.maps.Point( 22, 32 )
+        ),
+    }
+    
 
     const map = window.map
     window.map.addListener("drag",()=>{
@@ -60,17 +107,21 @@ function success(position) {
                     origin : {lat:origin_lat, lng:origin_lng},
                     destination : {lat:1.379238,lng:103.849848},
                     waypoints: [
-                        {location:{lat:1.380080,lng:103.848500}}
+                        {location:{lat:1.380080,lng:103.848500},
+                        }
                     ],
                     optimizeWaypoints: true,
                     travelMode: google.maps.TravelMode.WALKING
                 }) .then((response)=>{
-                    
                     directionRenderer.setDirections(response);
                     const route = response.routes[0];
                     var leg = route.legs[0]
+                    paths = response.routes[0].legs
                     makeStartMarker(leg.start_location, leg.end_location)
-                    makeMarker(leg.end_location, icons.marker,"END")
+                    for (index in paths){
+                        leg = paths[index]
+                        //makeMarker(leg.end_location, icons.marker,"END")
+                    }
                 })
         // If button is not clicked before
         } else{
@@ -92,7 +143,7 @@ function success(position) {
                     makeStartMarker(leg.start_location, leg.end_location)
                     for (index in paths){
                         leg = paths[index]
-                        makeMarker(leg.end_location, icons.marker,"END")
+                        makeMarker(leg.end_location, markers[0],"END") 
                     }
                 })
             }); 
