@@ -2,83 +2,110 @@ var watchID,geoLoc,target,travelMode;
 var flag = false; 
 var notAtTrail = true
 var centered = false;
-var completeButtonFlag = false;
-var getRouteButtonFlag = false;
-var gMarkers = []
 var target = {latitude:1.379155,longitude:103.849828};
+var landmarkIndex = 0
+const Chinatown = [
+    {
+        name: "Chinese Heritage Center",
+        location: {
+            lat: 1.283421, // add here latitude if using static data
+            lng: 103.844455, // add here longitude if using static data
 
-var localStorage= window.localStorage
-if (localStorage.getItem('landmarkIndex')){
-    var landmarkIndex=localStorage.getItem('landmarkIndex')
-} else{
-    var landmarkIndex = localStorage.setItem('landmarkIndex',0)
-}
+        }
+    },
 
-const Chinatown= [ 
-    { 
-        name: "Chinese Heritage Center", 
-        location: { 
-            lat: 1.283421, // add here latitude if using static data 
-            lng: 103.844455, // add here longitude if using static data 
- 
-        },
-        content:"Get transported back in time and experience the footsteps \n of migrants in the late 19th century of singapore",
-        src:'https://rayrixo.github.io/Fyp_testingAR/testin.html' 
-    }, 
- 
-    { 
-        name: "Sri Maraimman Temple", 
-        location:{ 
-            lat:1.282644, 
-            lng:103.845227, 
-        },
-        content:'This hindu temple is the oldest \n and largest of its kind in singapore'  
-    }, 
- 
-    { 
-        name: "Masjid Jamae", 
-        location:{ 
-            lat:1.283190, 
-            lng:103.845329, 
-        },
-        content:'Established in 1826 it is one of the oldest mosque in \n singapore One of the only six in the \n country that conducts sermons in tamil' 
-    }, 
- 
-    { 
-        name: "Mural at Mohamed Ali Lane", 
-        location:{ 
-            lat:1.2827594818546095,  
-            lng:103.84583411762635, 
-        }, 
-        content:'Witness murals that depict the past \n through the eyes of singaporean artist Yip Yew Chong.'
-    }, 
- 
-    { 
-        name: "Tong Heng", 
-        location:{ 
-            lat:1.281370, 
-            lng:103.844937, 
-        },
-        content:'Tong Heng is the oldest confectioneries. \n Witness a story of resilience, \n determination and resourcefulness.' 
-    }, 
- 
-    { 
-        name: "Buddha Tooth Relic Temple", 
-        location:{ 
-            lat:1.281458, 
-            lng:103.844192, 
-        },
-        content:'This place hold special meaning for buddhist people as it stores the left canine tooth of buddha' 
-    }, 
- 
-    { 
-        name: "Sago Street", 
-        location:{ 
-            lat:1.281683, 
-            lng:103.844203, 
-        },
-        content:'Experience the street of the dead where immigrants of the past with no family lived and died'
-    }, 
+    {
+        name: "Sri Maraimman Temple",
+        location:{
+            lat:1.282644,
+            lng:103.845227,
+        }
+    },
+
+    {
+        name: "Masjid Jamae",
+        location:{
+            lat:1.283190,
+            lng:103.845329,
+        }
+    },
+
+    {
+        name: "Mural at Mohamed Ali Lane",
+        location:{
+            lat:1.2827594818546095, 
+            lng:103.84583411762635,
+        }
+    },
+
+    {
+        name: "Tong Heng",
+        location:{
+            lat:1.281370,
+            lng:103.844937,
+        }
+    },
+
+    {
+        name: "Buddha Tooth Relic Temple",
+        location:{
+            lat:1.281458,
+            lng:103.844192,
+        }
+    },
+
+    {
+        name: "Sago Street",
+        location:{
+            lat:1.281683,
+            lng:103.844203,
+        }
+    },
+
+    {
+        name: "Chinatown Visitor Centre",
+        location:{
+            lat:1.281790,
+            lng:103.844128,
+        }
+    },
+
+    {
+        name: "Chinatown Food Street",
+        location:{
+            lat:1.282301956083743,
+            lng:103.8439297409357,
+        }
+    },
+
+    {
+        name: "Chinatown Complex",
+        location:{
+            lat:1.2827469159145881, 
+            lng:103.84318438315941,
+        }
+    },
+    {
+        name: "Nams Supplies",
+        location:{
+            lat:1.2821764238861229, 
+            lng:103.8444112397504,
+        }
+    },
+    {
+        name: "Thian Hock Keng Temple",
+        location:{
+            lat:1.2810767548472404, 
+            lng:103.84769333260996 ,
+        }
+    },
+    {
+        name: "My Awesome Cafe",
+        location:{
+            lat:1.2801230681341091, 
+            lng:103.84719956266558, 
+        }
+    },
 ];
 
 /**  waypoints: [
@@ -114,6 +141,9 @@ function getDistance(mk1){
 $('#dialog').hide();
 
 
+document.getElementById("submitTravelMode").addEventListener("click", () => {
+    $('#dialog').hide();
+}) 
 
 function success(position) {
     var origin_lat = position.coords.latitude;
@@ -159,7 +189,6 @@ function success(position) {
         centered= false
     })
     
-    
     document.getElementById("recenter").addEventListener("click", () => {
         centered = true
         console.log(centered)
@@ -179,40 +208,12 @@ function success(position) {
     } else{
         const directionsService = new google.maps.DirectionsService();
         const directionRenderer = new google.maps.DirectionsRenderer({preserveViewport:true});
-        if(!completeButtonFlag){
-            completeButtonFlag = true
-            
-             // --TO DO --  Display route on click
-            document.getElementById("complete").addEventListener("click", () => {
-                console.log("Compelte button pressed")
-                landmarkIndex += 1 
-                directionRenderer.set('directions', null)
-                removeMarkers()
-                
-                directionsService.route({
-                    origin : {lat:origin_lat, lng:origin_lng},
-                    destination : Chinatown[landmarkIndex].location,   
-                    travelMode: google.maps.TravelMode["WALKING"]
-                }) .then((response)=>{
-                    console.log(response)
-                    directionRenderer.setDirections(response);
-                    const route = response.routes[0];
-                    var leg = route.legs[0]
-                    instructions = leg["steps"][0].instructions + " "+ leg["steps"][0].distance.text + "  "+leg["steps"][0].duration.text
-                    document.getElementById("instructions").innerHTML = instructions
-                })  
-                  
-            })
-        }
-
         directionRenderer.setMap(map);
         distance = getDistance(origin)
         // If not at trail yet
         if (distance<700){
             console.log(travelMode)
             if (flag){
-                directionRenderer.setMap(null); 
-                removeMarkers()
                 directionsService.route({
                     origin : {lat:origin_lat, lng:origin_lng},
                     destination : Chinatown[0].location,   
@@ -223,8 +224,7 @@ function success(position) {
                     var leg = route.legs[0]
                     instructions = leg["steps"][0].instructions + " "+ leg["steps"][0].distance.text + "  "+leg["steps"][0].duration.text
                     document.getElementById("instructions").innerHTML = instructions
-                    gMarker = makeStartMarker(leg.start_location, leg.end_location)
-                    gMarkers.push(gMarker)
+                    makeStartMarker(leg.start_location, leg.end_location)
                 })
             }
             document.getElementById("submit").addEventListener("click", function showDialog() {
@@ -243,8 +243,7 @@ function success(position) {
                         var leg = route.legs[0]
                         instructions = leg["steps"][0].instructions + " "+ leg["steps"][0].distance.text + "  "+leg["steps"][0].duration.text
                         document.getElementById("instructions").innerHTML = instructions
-                        gMarker = makeStartMarker(leg.start_location, leg.end_location)
-                        gMarkers.push(gMarker)
+                        makeStartMarker(leg.start_location, leg.end_location)
                     })
                 })  
             }) 
@@ -255,11 +254,24 @@ function success(position) {
         // TO-DO For loop go through Chinatown[i].location and get route to next landmark
         else{
             if (flag){
-                directionRenderer.setMap(null); 
-                removeMarkers()
                 directionsService.route({
                     origin : {lat:origin_lat, lng:origin_lng},
-                    destination : Chinatown[landmarkIndex].location,   
+                    destination : Chinatown[12].location,   
+                    waypoints: [
+                        {location:Chinatown[0].location},
+                        {location:Chinatown[1].location},
+                        {location:Chinatown[2].location},
+                        {location:Chinatown[3].location},
+                        {location:Chinatown[4].location},
+                        {location:Chinatown[5].location},
+                        {location:Chinatown[6].location},
+                        {location:Chinatown[7].location},
+                        {location:Chinatown[8].location},
+                        {location:Chinatown[9].location},
+                        {location:Chinatown[10].location},
+                        {location:Chinatown[11].location},
+                    ],
+                    optimizeWaypoints: true,
                     travelMode: google.maps.TravelMode.WALKING
                 }) .then((response)=>{
                     directionRenderer.setDirections(response);
@@ -268,34 +280,50 @@ function success(position) {
                     instructions = leg["steps"][0].instructions + " "+ leg["steps"][0].distance.text + "  "+leg["steps"][0].duration.text
                     document.getElementById("instructions").innerHTML = instructions
                     paths = response.routes[0].legs
-                    gMarker = makeStartMarker(leg.start_location, leg.end_location)
-                    gMarkers.push(gMarker)
+                    makeStartMarker(leg.start_location, leg.end_location)
+                    for (index in paths){
+                        leg = paths[index]
+                        //makeMarker(leg.end_location, icons.marker,"END")
+                    }
                 })
             } 
-
-            if (!getRouteButtonFlag){
-                // Set get route button 
-                getRouteButtonFlag = true
-                document.getElementById("submit").addEventListener("click", () => {
-                    flag = true
-                    directionsService.route({
-                        origin : {lat:origin_lat, lng:origin_lng},
-                        destination : Chinatown[landmarkIndex].location,
-                        travelMode: google.maps.TravelMode.WALKING
-                    }) .then((response)=>{
-                        directionRenderer.setDirections(response);
-                        const route = response.routes[0];
-                        var leg = route.legs[0]
-                        // TO-DO  Direction Instructions
-                        instructions = leg["steps"][0].instructions + " "+ leg["steps"][0].distance.text + "  "+leg["steps"][0].duration.text
-                        document.getElementById("instructions").innerHTML = instructions
-                        paths = response.routes[0].legs
-                        gMarker = makeStartMarker(leg.start_location, leg.end_location)
-                        gMarkers.push(gMarker)
-                    })
-                }); 
-            }
-            
+            // Set get route button 
+            document.getElementById("submit").addEventListener("click", () => {
+                flag = true
+                directionsService.route({
+                    origin : {lat:origin_lat, lng:origin_lng},
+                    destination : Chinatown[12].location,
+                    waypoints: [
+                        {location:Chinatown[0].location},
+                        {location:Chinatown[1].location},
+                        {location:Chinatown[2].location},
+                        {location:Chinatown[3].location},
+                        {location:Chinatown[4].location},
+                        {location:Chinatown[5].location},
+                        {location:Chinatown[6].location},
+                        {location:Chinatown[7].location},
+                        {location:Chinatown[8].location},
+                        {location:Chinatown[9].location},
+                        {location:Chinatown[10].location},
+                        {location:Chinatown[11].location},
+                    ],
+                    optimizeWaypoints: true,
+                    travelMode: google.maps.TravelMode.WALKING
+                }) .then((response)=>{
+                    directionRenderer.setDirections(response);
+                    const route = response.routes[0];
+                    var leg = route.legs[0]
+                    // TO-DO  Direction Instructions
+                    instructions = leg["steps"][0].instructions + " "+ leg["steps"][0].distance.text + "  "+leg["steps"][0].duration.text
+                    document.getElementById("instructions").innerHTML = instructions
+                    paths = response.routes[0].legs
+                    makeStartMarker(leg.start_location, leg.end_location)
+                    for (index in paths){
+                        leg = paths[index]
+                        //makeMarker(leg.end_location, markers[0],"END") 
+                    }
+                })
+            }); 
         }
         }
     }
@@ -339,17 +367,17 @@ function currentPositionError(err){
 }
 
 function makeMarker( position, icon, title ) {
-    marker = new google.maps.Marker({
+    new google.maps.Marker({
      position: position,
      map: map,
      icon: icon,
      title: title
     });
-    return marker
 }
 
+
+
 function makeStartMarker( position,direction) {
-    
     var heading = google.maps.geometry.spherical.computeHeading(direction,position);
     var line=new google.maps.Polyline({
         clickable:false,
@@ -363,13 +391,5 @@ function makeStartMarker( position,direction) {
             }
         }]
     })
-    return line
 }
-
-function removeMarkers (){
-    for(i=0; i<gMarkers.length; i++){
-        gMarkers[i].setMap(null);
-    }
-}
-
  
