@@ -18,7 +18,7 @@ const loadPlaces = function() {
      
             },
             content:"Get transported back in time and experience the footsteps \n of migrants in the late 19th century of singapore",
-            src:'https://nixonchew.github.io/Wtv/landmarks/chineseheritagecenter.html' 
+            src:'https://rayrixo.github.io/Fyp_testingAR/testin.html' 
         }, 
      
         { 
@@ -28,7 +28,7 @@ const loadPlaces = function() {
                 lng:103.845227, 
             },
             content:'This hindu temple is the oldest \n and largest of its kind in singapore',
-            src:'https://nixonchew.github.io/Wtv/landmarks/SriMariamman.html'   
+            src:'https://rayrixo.github.io/Fyp_testingAR/SriMariamman.html'  
         }, 
      
         { 
@@ -38,7 +38,7 @@ const loadPlaces = function() {
                 lng:103.845329, 
             },
             content:'Established in 1826 it is one of the oldest mosque in \n singapore One of the only six in the \n country that conducts sermons in tamil',
-            src:'https://nixonchew.github.io/Wtv/landmarks/MasjidJamae.html'  
+            src:'https://rayrixo.github.io/Fyp_testingAR/MasjidJamae.html' 
         }, 
      
         { 
@@ -48,7 +48,7 @@ const loadPlaces = function() {
                 lng:103.84583411762635, 
             }, 
             content:'Witness murals that depict the past \n through the eyes of singaporean artist Yip Yew Chong.',
-            src:'https://nixonchew.github.io/Wtv/landmarks/MuralStreet.html' 
+            src:'https://rayrixo.github.io/Fyp_testingAR/MuralStreet.html'
         }, 
      
         { 
@@ -58,7 +58,7 @@ const loadPlaces = function() {
                 lng:103.844937, 
             },
             content:'Tong Heng is the oldest confectioneries. \n Witness a story of resilience, \n determination and resourcefulness.',
-            src:'https://nixonchew.github.io/Wtv/landmarks/TongHeng.html' 
+            src:'https://rayrixo.github.io/Fyp_testingAR/TongHeng.html'
         }, 
      
         { 
@@ -68,19 +68,9 @@ const loadPlaces = function() {
                 lng:103.844192, 
             },
             content:'This place hold special meaning for buddhist people as it stores the left canine tooth of buddha',
-            src:'https://nixonchew.github.io/Wtv/landmarks/BuddhaToothRelic.html' 
+            src:'https://rayrixo.github.io/Fyp_testingAR/BuddhaToothRelic.html' 
         }, 
      
-        { 
-            name: "Pagoda Street", 
-            location:{ 
-                lat:1.283330, 
-                lng:103.844450, 
-            },
-            content:'This place hold special meaning for buddhist people as it stores the left canine tooth of buddha',
-            src:'https://nixonchew.github.io/Wtv/landmarks/PagodaStreet.html'
-        },
-
         { 
             name: "Sago Street", 
             location:{ 
@@ -88,7 +78,7 @@ const loadPlaces = function() {
                 lng:103.844203, 
             },
             content:'Experience the street of the dead where immigrants of the past with no family lived and died',
-            src:'https://nixonchew.github.io/Wtv/landmarks/SagoStreet.html' 
+            src:'https://rayrixo.github.io/Fyp_testingAR/SagoStreet.html' 
         }, 
     ];
 
