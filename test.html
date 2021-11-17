@@ -5,7 +5,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet"/>
-
+    <link href="scripts/gdropdown.css" rel="stylesheet" type="text/css"/>
+    <script async src="Trails/info.js"></script>
+    <script async src="scripts/gDropDown.js"></script>
     <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCL1J1qRPLGfBP9AkMp9E0zfD-5_5UZcWs&callback=getLocationUpdate"> </script>
     <script async src = "scripts/test.js"></script>
     <style>
@@ -21,12 +23,12 @@
 </head>
 <body>
 
-<input type="button" id="submit" value="Get your route" />
-<button id ="recenter">RECENTER</button>
+<input type="button" style="margin: 5px; border: 1px solid; padding: 1px 12px; font: bold 20px Roboto, Arial, sans-serif; color: #000000; background-color: #FFFFFF; cursor: pointer;" id="submit" value="Start"  />
+<button id="recenter" style="background-color: white;"> <img src="static/center-icon.jpg" style="width: 25px;height: 25px;background-color: white;"> </button>
 <button id ="complete">Complete</button>
 <span id ="instructions"></span>
 <div id="map"></div>
-<div id="dialog" title="Not at trail yet?">
+<div id="dialog" title="It seems that you are more than 700m from the trail">
   <p>Choose travel mode</p>   
   <select id = "option">
     <option value="DRIVING">Driving</option>
@@ -34,6 +36,11 @@
     <option value="BICYCLING">Bicycling</option>
     <option value="TRANSIT">Transit</option>
   </select>
+  <input style = "margin-left: 230px;display:none;" type="button" id="submitTravelMode" value="Ok" />
+</div>
+<div id="fardialog" title="Close to Trail?">
+  <p>It seems that you are less than 700m from the trail</p>   
+
   <input style = "margin-left: 230px;display:none;" type="button" id="submitTravelMode" value="Ok" />
 </div>
 
